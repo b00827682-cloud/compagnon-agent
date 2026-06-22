@@ -1,0 +1,11 @@
+{
+  "title": "Happy path — recipe accepted, order placed within cap",
+  "input": { "diet": "none", "cap": 40, "auto": true, "killed": false },
+  "expected_trajectory": [
+    "carbon.grade: B",
+    "recipe.rescue: [Strawberries, Baby spinach, Fresh milk, Tomatoes]",
+    "recipe.accepted: Spinach & egg frittata, grounding 2/4, dietary_ok true",
+    "order.decide: PLACED, total €11.00, co2Saved 1.4 kg"
+  ],
+  "expected_output": { "order_status": "PLACED", "order_total": 11.0 }
+}

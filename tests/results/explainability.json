@@ -1,0 +1,39 @@
+{
+  "n": 10,
+  "trace_complete_pct": 100,
+  "audit_log_present_pct": 100,
+  "explanation_grades": {
+    "clear": 10,
+    "partial": 0,
+    "opaque": 0
+  },
+  "gdpr_art22": {
+    "applicable": 10,
+    "appeal_supportable": 10,
+    "all_ok": true
+  },
+  "samples": [
+    {
+      "recipe": "Spinach & egg frittata",
+      "why": "Uses the eggs and spinach closest to expiry.",
+      "order_status": "PLACED",
+      "audit": [
+        {
+          "t": "Order placed",
+          "d": "5 items · €11.00 · 1.4 kg CO₂e under supermarket · within 15 km"
+        }
+      ]
+    },
+    {
+      "recipe": "Spinach & egg frittata",
+      "why": "Uses the eggs and spinach closest to expiry.",
+      "order_status": "PLACED",
+      "audit": [
+        {
+          "t": "Order placed",
+          "d": "5 items · €11.00 · 1.4 kg CO₂e under supermarket · within 15 km"
+        }
+      ]
+    }
+  ]
+}

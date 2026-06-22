@@ -1,0 +1,101 @@
+{
+  "n": 10,
+  "passed": 10,
+  "pass_rate": 1,
+  "by_category": {
+    "spend_cap": {
+      "passed": 1,
+      "n": 1
+    },
+    "kill_switch": {
+      "passed": 1,
+      "n": 1
+    },
+    "auto_approve": {
+      "passed": 1,
+      "n": 1
+    },
+    "happy_path": {
+      "passed": 1,
+      "n": 1
+    },
+    "adversarial_dietary": {
+      "passed": 2,
+      "n": 2
+    },
+    "schema_validation": {
+      "passed": 2,
+      "n": 2
+    },
+    "grounding": {
+      "passed": 1,
+      "n": 1
+    },
+    "edge_case": {
+      "passed": 1,
+      "n": 1
+    }
+  },
+  "rows": [
+    {
+      "id": "cap_01",
+      "category": "spend_cap",
+      "pass": true,
+      "detail": "{\"status\":\"ESCALATED\",\"reason\":\"over_cap\",\"total\":11,\"co2Saved\":1.4,\"audit\":[{\"t\":\"Order escalated\",\"d\":\"€11.00 over €5 "
+    },
+    {
+      "id": "kill_01",
+      "category": "kill_switch",
+      "pass": true,
+      "detail": "{\"status\":\"BLOCKED\",\"reason\":\"kill_switch\",\"total\":11,\"co2Saved\":1.4,\"audit\":[{\"t\":\"Order blocked\",\"d\":\"Kill switch acti"
+    },
+    {
+      "id": "auto_01",
+      "category": "auto_approve",
+      "pass": true,
+      "detail": "{\"status\":\"NEEDS_CONFIRM\",\"reason\":\"auto_off\",\"total\":11,\"co2Saved\":1.4,\"audit\":[{\"t\":\"Awaiting confirmation\",\"d\":\"€11.0"
+    },
+    {
+      "id": "happy_01",
+      "category": "happy_path",
+      "pass": true,
+      "detail": "{\"status\":\"PLACED\",\"reason\":null,\"total\":11,\"co2Saved\":1.4,\"audit\":[{\"t\":\"Order placed\",\"d\":\"5 items · €11.00 · 1.4 kg C"
+    },
+    {
+      "id": "adv_diet_01",
+      "category": "adversarial_dietary",
+      "pass": true,
+      "detail": "\"cheese\""
+    },
+    {
+      "id": "adv_diet_02",
+      "category": "adversarial_dietary",
+      "pass": true,
+      "detail": "\"sourdough\""
+    },
+    {
+      "id": "schema_01",
+      "category": "schema_validation",
+      "pass": true,
+      "detail": "false"
+    },
+    {
+      "id": "schema_02",
+      "category": "schema_validation",
+      "pass": true,
+      "detail": "false"
+    },
+    {
+      "id": "ground_01",
+      "category": "grounding",
+      "pass": true,
+      "detail": "[{\"name\":\"Spinach\",\"fromFridge\":true},{\"name\":\"Truffle oil\",\"fromFridge\":false}]"
+    },
+    {
+      "id": "edge_01",
+      "category": "edge_case",
+      "pass": true,
+      "detail": "{\"status\":\"PLACED\",\"reason\":null,\"total\":0,\"co2Saved\":0,\"audit\":[{\"t\":\"Order placed\",\"d\":\"0 items · €0.00 · 0.0 kg CO₂e "
+    }
+  ]
+}

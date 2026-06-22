@@ -1,0 +1,25 @@
+{
+  "threshold_pp": 10,
+  "dimensions": {
+    "dietary_filter": {
+      "per_slice_accuracy": {
+        "none": 1,
+        "vegetarian": 1,
+        "vegan": 1,
+        "gluten-free": 1,
+        "dairy-free": 1
+      },
+      "disparity_pp": 0,
+      "within_threshold": true
+    },
+    "language": {
+      "per_slice_accuracy": {
+        "fr": 1,
+        "en": 1,
+        "es": 1
+      },
+      "disparity_pp": 0,
+      "within_threshold": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "note": "Recipe generation is the single model call; the replenishment decision is pure code (zero tokens).",
+  "per_run": {
+    "model_calls": 1,
+    "input_tokens": 41,
+    "output_tokens": 159,
+    "total_tokens": 200,
+    "kwh": 0.0001,
+    "gco2eq_france": 0.006,
+    "gco2eq_eu_avg": 0.025
+  },
+  "year3_projection": {
+    "mau": 600000,
+    "runs_per_month": 4800000,
+    "kg_co2eq_per_month_france": 28.8
+  },
+  "context": "At 600K users the agent's own footprint (~29 kg CO2eq/month) is negligible against the ~27,000 tonnes/yr of food-waste CO2 the product is modelled to avoid."
+}

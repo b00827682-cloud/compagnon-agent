@@ -1,0 +1,29 @@
+[
+  {
+    "step": "carbon.grade",
+    "grade": "B"
+  },
+  {
+    "step": "recipe.rescue",
+    "items": [
+      "Strawberries",
+      "Baby spinach",
+      "Fresh milk",
+      "Tomatoes"
+    ],
+    "diet": "none"
+  },
+  {
+    "step": "recipe.accepted",
+    "title": "Spinach & egg frittata",
+    "grounding": "2/4",
+    "dietary_ok": true
+  },
+  {
+    "step": "order.decide",
+    "status": "PLACED",
+    "total": 11,
+    "co2Saved": 1.4,
+    "reason": null
+  }
+]

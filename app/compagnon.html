@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Compagnon · Sustainable Food</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;450;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+:root{
+  --forest:#163C34;--forest-2:#1E5245;--forest-deep:#0F2A24;
+  --moss:#4E9A6B;--sage:#9DBE9E;--sage-2:#C9DCC4;
+  --gold:#C9A227;--gold-soft:#E7CE72;
+  --cream:#F3F0E6;--paper:#FBF9F1;--paper-2:#F6F3E9;
+  --ink:#19211D;--muted:#6E7A72;--faint:#9AA49C;
+  --line:#E4DECC;--line-2:#EFEADB;
+  --A:#2F7D52;--B:#4E9A6B;--C:#C9A227;--D:#D9852B;--E:#C0563B;--F:#9B3B2A;
+  --bad:#C0563B;--warn:#D29A2E;--good:#4E9A6B;
+  --shadow:0 1px 2px rgba(15,42,36,.06),0 8px 24px rgba(15,42,36,.06);
+  --shadow-lg:0 24px 60px rgba(15,42,36,.22);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:#0F2A24;font-family:Inter,system-ui,sans-serif;color:var(--ink)}
+body{display:flex;justify-content:center;min-height:100vh}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{width:0;height:0}
+#frame{width:100%;max-width:430px;min-height:100vh;background:var(--cream);position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+@media(min-width:480px){
+  body{align-items:center;background:radial-gradient(120% 120% at 50% 0%,#1E5245 0%,#0F2A24 60%)}
+  #frame{min-height:0;height:920px;max-height:96vh;border-radius:42px;border:10px solid #0c211c;box-shadow:0 40px 120px rgba(0,0,0,.5)}
+}
+#app{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:96px}
+.pad{padding:0 18px}
+.fade{animation:fade .42s cubic-bezier(.2,.7,.2,1)}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.fade,.rise,.sweep,.pop,.spin{animation:none!important}}
+.disp{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.01em;line-height:1.02}
+.mono{font-family:'Space Mono',monospace}
+.eyebrow{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.h1{font-family:Fraunces;font-weight:600;font-size:30px;letter-spacing:-.02em;line-height:1.05}
+.h2{font-family:Fraunces;font-weight:600;font-size:21px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:13.5px;line-height:1.5}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 8px;gap:12px}
+.brandmark{display:flex;align-items:center;gap:9px}
+.leaf{width:30px;height:30px;border-radius:9px;background:var(--forest);display:grid;place-items:center;flex:none}
+.brandtext{font-family:Fraunces;font-weight:600;font-size:15px;line-height:1;color:var(--forest)}
+.brandtext small{display:block;font-family:'Space Mono';font-weight:400;font-size:8.5px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-top:3px}
+.iconbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--paper);border:1px solid var(--line);color:var(--forest)}
+.iconbtn:active{transform:scale(.94)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.card.flat{box-shadow:none}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:999px;line-height:1}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;padding:8px 13px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.chip.on{background:var(--forest);color:#fff;border-color:var(--forest)}
+.aibadge{display:inline-flex;align-items:center;gap:7px;background:rgba(201,162,39,.13);border:1px solid rgba(201,162,39,.4);color:#8a6f12;padding:6px 11px;border-radius:999px;font-size:11px;font-weight:600}
+.aibadge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.22)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:600;font-size:15px;padding:14px 18px;border-radius:14px;background:var(--forest);color:#fff;width:100%;transition:transform .12s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.55}
+.btn.gold{background:var(--gold);color:#2c2406}
+.btn.ghost{background:var(--paper);color:var(--forest);border:1px solid var(--line)}
+.btn.danger{background:#fff;color:var(--bad);border:1px solid rgba(192,86,59,.35)}
+.btn.sm{padding:10px 14px;font-size:13.5px;width:auto;border-radius:12px}
+.edot{width:8px;height:8px;border-radius:50%;flex:none}
+.urg-0{background:var(--bad)}.urg-1{background:var(--warn)}.urg-2{background:var(--good)}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:74px;background:rgba(251,249,241,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding:8px 6px 14px;z-index:40}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--faint);font-size:10px;font-weight:600;padding-top:4px;position:relative}
+.tab.on{color:var(--forest)}
+.tab .ti{width:24px;height:24px;display:grid;place-items:center;transition:transform .18s}
+.tab.on .ti{transform:translateY(-1px)}
+.tab .pip{width:5px;height:5px;border-radius:50%;background:var(--gold);position:absolute;top:2px;margin-left:14px}
+.scrim{position:absolute;inset:0;background:rgba(15,42,36,.42);z-index:50;animation:fade .25s}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-radius:24px 24px 0 0;z-index:51;max-height:92%;overflow-y:auto;animation:rise .34s cubic-bezier(.2,.8,.2,1);padding-bottom:24px}
+@keyframes rise{from{transform:translateY(100%)}to{transform:none}}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 4px}
+.toggle{width:46px;height:28px;border-radius:999px;background:var(--line);position:relative;transition:.2s;flex:none}
+.toggle.on{background:var(--moss)}
+.toggle b{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on b{left:21px}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:var(--line-2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--forest);border:3px solid var(--paper);box-shadow:var(--shadow)}
+.field{width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--line);background:var(--paper);font-size:15px;color:var(--ink);outline:none}
+.field:focus{border-color:var(--moss)}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--paper)}
+.stepper button{width:46px;height:46px;font-size:20px;color:var(--forest);display:grid;place-items:center}
+.stepper .v{flex:1;text-align:center;font-family:'Space Mono';font-weight:700}
+.viewfinder{position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(160deg,#1b463b,#0f2a24);aspect-ratio:3/4;border:1px solid rgba(255,255,255,.08)}
+.bracket{position:absolute;width:30px;height:30px;border:2.5px solid var(--gold-soft);opacity:.9}
+.scanline{position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,var(--gold-soft),transparent);box-shadow:0 0 18px var(--gold-soft);animation:sweep 1.7s ease-in-out infinite}
+@keyframes sweep{0%{top:12%}50%{top:84%}100%{top:12%}}
+.bbox{position:absolute;border:1.6px solid rgba(231,206,114,.95);border-radius:6px;animation:pop .3s;box-shadow:0 0 0 1px rgba(15,42,36,.25)}
+.bbox span{position:absolute;top:-9px;left:-1px;transform:translateY(-100%);background:var(--gold-soft);color:#2c2406;font-size:8.5px;font-weight:700;font-family:'Space Mono';padding:2px 5px;border-radius:4px;white-space:nowrap}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.gradewrap{position:relative;width:140px;height:140px}
+.gradeletter{position:absolute;inset:0;display:grid;place-items:center;font-family:Fraunces;font-weight:600;font-size:52px;letter-spacing:-.03em}
+.barrow{display:flex;align-items:center;gap:10px;padding:9px 0}
+.bartrack{flex:1;height:8px;border-radius:5px;background:var(--line-2);overflow:hidden}
+.barfill{height:100%;border-radius:5px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.rise{animation:risein .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes risein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.div{height:1px;background:var(--line);margin:0}
+.kbd{font-family:'Space Mono';font-size:11px;color:var(--muted)}
+.spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite}
+.spin.dark{border-color:rgba(22,60,52,.25);border-top-color:var(--forest)}
+@keyframes rot{to{transform:rotate(360deg)}}
+.toast{position:absolute;left:18px;right:18px;bottom:88px;background:var(--forest-deep);color:#fff;padding:12px 14px;border-radius:14px;font-size:13px;font-weight:500;z-index:60;display:flex;gap:9px;align-items:center;animation:rise .3s;box-shadow:var(--shadow-lg)}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:40px 24px}
+.empty .ring{width:64px;height:64px;border-radius:20px;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center}
+.splash{position:absolute;inset:0;background:var(--forest-deep);display:grid;place-items:center;z-index:80}
+</style>
+</head>
+<body>
+<div id="frame"><div id="root"></div></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const {useState,useEffect,useRef,useMemo,useCallback}=React;
+
+/* -------- persistent storage (artifact window.storage, in-memory fallback) -------- */
+const mem={};
+const store={
+  async get(k,fb){ try{ if(window.storage){const r=await window.storage.get(k); return r&&r.value!=null?JSON.parse(r.value):fb;} }catch(e){} return (k in mem)?mem[k]:fb; },
+  async set(k,v){ mem[k]=v; try{ if(window.storage) await window.storage.set(k,JSON.stringify(v)); }catch(e){} }
+};
+
+/* -------- model call: keyless inside the Claude app, or bring-your-own-key in any browser -------- */
+let USER_KEY=null;
+async function callClaude(body){
+  const headers={"Content-Type":"application/json"};
+  if(USER_KEY){ headers["x-api-key"]=USER_KEY; headers["anthropic-version"]="2023-06-01"; headers["anthropic-dangerous-direct-browser-access"]="true"; }
+  let r;
+  try{ r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify(body)}); }
+  catch(e){ throw new Error(USER_KEY?"Network error reaching Anthropic.":"Can’t reach Claude. Open this inside the Claude app, or add your Anthropic API key in Settings."); }
+  let data; try{ data=await r.json(); }catch(e){ throw new Error("HTTP "+r.status); }
+  if(!r.ok || data.type==="error"){ const m=(data&&data.error&&data.error.message)||("HTTP "+r.status);
+    if(/browser-access|CORS|authentication/i.test(m) && !USER_KEY) throw new Error("Open this inside the Claude app, or add your Anthropic API key in Settings to scan from a browser.");
+    throw new Error(m); }
+  return data;
+}
+
+/* -------- icons -------- */
+const I={
+  leaf:(c="#E7CE72")=>(<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20C5 18 4 11 5 4c7 0 12 2 14 8 2 6-3 10-8 8Z"/><path d="M8 17c2-4 5-6 9-7"/></svg>),
+  today:(c)=>(<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/><circle cx="12" cy="12" r="4.2"/></svg>),
+  scan:(c)=>(<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></svg>),
+  carbon:(c)=>(<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-5"/><circle cx="12" cy="18" r="1.3" fill={c} stroke="none"/></svg>),
+  recipe:(c)=>(<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3v7a2 2 0 0 0 4 0V3M7 11v10"/><path d="M16 3c-1.5 0-3 1.8-3 5s1.5 4 3 4"/><path d="M16 3v18"/></svg>),
+  order:(c)=>(<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M5 8h14l-1.3 9.2a2 2 0 0 1-2 1.8H8.3a2 2 0 0 1-2-1.8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>),
+  gear:(c="#163C34")=>(<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8 2 2 0 1 1-2.8 2.8 1.6 1.6 0 0 0-2.7 1.2 2 2 0 1 1-4 0 1.6 1.6 0 0 0-2.7-1.1 2 2 0 1 1-2.8-2.8A1.6 1.6 0 0 0 4.6 15a1.6 1.6 0 0 0-1.5-1 2 2 0 1 1 0-4 1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8 2 2 0 1 1 2.8-2.8 1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5 2 2 0 1 1 4 0 1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3 2 2 0 1 1 2.8 2.8 1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1 2 2 0 1 1 0 4 1.6 1.6 0 0 0-1.5 1Z"/></svg>),
+  check:(c="#4E9A6B")=>(<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>),
+  arrow:(c="#163C34")=>(<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>),
+  alert:(c="#D29A2E")=>(<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>),
+  pin:(c="#163C34")=>(<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.6"/></svg>),
+  power:(c="#C0563B")=>(<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v9"/><path d="M6.6 6.6a8 8 0 1 0 10.8 0"/></svg>),
+  close:(c="#163C34")=>(<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>),
+  plus:(c="#fff")=>(<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>),
+  spark:(c="#C9A227")=>(<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6Z"/></svg>),
+  cam:(c="#fff")=>(<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.4"/></svg>),
+  trash:(c="#C0563B")=>(<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/></svg>),
+  edit:(c="#163C34")=>(<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>),
+};
+
+/* -------- domain -------- */
+const CATS=["Vegetables","Fruit","Dairy","Protein","Bakery","Plant milk","Pantry"];
+const CAT_DEF={Vegetables:{co2:0.5,wkg:0.4},Fruit:{co2:0.5,wkg:0.5},Dairy:{co2:5.0,wkg:0.4},Protein:{co2:6.0,wkg:0.4},Bakery:{co2:0.9,wkg:0.4},"Plant milk":{co2:0.9,wkg:1.0},Pantry:{co2:1.5,wkg:0.4}};
+const GRADE_BANDS=[["A",0,1.0],["B",1.0,2.4],["C",2.4,4.4],["D",4.4,7],["E",7,10],["F",10,99]];
+const GRADE_COLOR={A:"var(--A)",B:"var(--B)",C:"var(--C)",D:"var(--D)",E:"var(--E)",F:"var(--F)"};
+let _id=0; const uid=()=>"i"+(Date.now()%100000)+(_id++);
+
+const PRODUCERS=[
+  {item:"Avoine de Brie oat milk",producer:"Biocoop Meaux",dist:14,price:2.40,co2:0.7,super:1.2},
+  {item:"Free-range eggs (×6)",producer:"Ferme du Tarteret",dist:6,price:2.10,co2:0.7,super:0.9},
+  {item:"Baby spinach",producer:"AMAP de la Marne",dist:11,price:1.80,co2:0.2,super:0.4},
+  {item:"Carrots (1 kg)",producer:"AMAP de la Marne",dist:11,price:1.50,co2:0.4,super:0.7},
+  {item:"Sourdough loaf",producer:"Fournil de la Ferté",dist:3,price:3.20,co2:0.6,super:0.8},
+];
+/* A sample fridge, used by the "Load sample fridge" shortcut for quick demos without a photo. */
+const SAMPLE_FRIDGE=()=>[
+  {name:"Orange juice",k:"Pantry",qty:"1 carafe",days:7,co2:0.9,wkg:1.00},
+  {name:"Fresh milk",k:"Dairy",qty:"1 L",days:5,co2:1.4,wkg:1.00},
+  {name:"Melon",k:"Fruit",qty:"1 container",days:4,co2:0.4,wkg:0.50},
+  {name:"Tomatoes",k:"Vegetables",qty:"4",days:6,co2:1.1,wkg:0.40},
+  {name:"Eggs",k:"Protein",qty:"12",days:14,co2:2.1,wkg:0.60},
+  {name:"Greek yogurt",k:"Dairy",qty:"1 tub",days:8,co2:1.5,wkg:0.50},
+  {name:"Strawberries",k:"Fruit",qty:"250 g",days:2,co2:0.7,wkg:0.25},
+  {name:"Apples",k:"Fruit",qty:"6",days:15,co2:0.4,wkg:0.70},
+  {name:"Cheese",k:"Dairy",qty:"1 wedge",days:18,co2:9.8,wkg:0.20},
+].map(x=>({id:uid(),origin:"Sample",...x}));
+const cat=(k)=>k;
+const urgency=(d)=>d<=1?0:d<=3?1:2;
+const effCo2=(it,sw)=> (sw && it.localAlt)? it.localAlt.co2 : it.co2*(it.transport||1);
+function intensity(inv,swaps){let w=0,c=0;inv.forEach(it=>{w+=it.wkg;c+=it.wkg*effCo2(it,swaps[it.id]);});return w?{avg:c/w,total:c}:{avg:0,total:0};}
+function gradeOf(avg){const b=GRADE_BANDS.find(x=>avg>=x[1]&&avg<x[2])||GRADE_BANDS[5];const[l,lo,hi]=b;const p=(avg-lo)/(hi-lo);const s=l==="A"||l==="F"?"":p<0.34?"+":p<0.67?"":"−";return{letter:l,sign:s,color:GRADE_COLOR[l]};}
+
+/* -------- shared bits -------- */
+const Eyebrow=({children})=> <div className="eyebrow">{children}</div>;
+const AIBadge=({label="Claude Sonnet 4.6"})=>(<span className="aibadge"><span className="dot"/>AI generated · {label}</span>);
+const Toggle=({on,onClick})=> <button className={"toggle"+(on?" on":"")} onClick={onClick}><b/></button>;
+function Bar({label,value,max,color,right}){return <div className="barrow"><div style={{width:104,fontSize:12.5,fontWeight:500}}>{label}</div><div className="bartrack"><div className="barfill" style={{width:Math.min(100,(value/max)*100)+"%",background:color}}/></div><div className="mono" style={{fontSize:11,color:"var(--muted)",width:48,textAlign:"right"}}>{right}</div></div>;}
+function Empty({title,desc,cta,onCta}){return <div className="empty"><div className="ring">{I.leaf("#163C34")}</div><div className="h2">{title}</div><div className="sub" style={{maxWidth:260}}>{desc}</div>{cta&&<button className="btn" style={{width:"auto",marginTop:6}} onClick={onCta}>{cta}</button>}</div>;}
+
+function TopBar({onSettings,killed}){return <div className="topbar"><div className="brandmark"><div className="leaf">{I.leaf()}</div><div className="brandtext">Compagnon<small>Sustainable Food</small></div></div><button className="iconbtn" onClick={onSettings} style={killed?{borderColor:"rgba(192,86,59,.4)",color:"var(--bad)"}:{}}>{killed?I.power():I.gear()}</button></div>;}
+const TABS=[["today","Today",I.today],["scan","Fridge",I.scan],["carbon","Carbon",I.carbon],["recipe","Recipes",I.recipe],["order","Order",I.order]];
+function Tabs({tab,setTab,expCount,canOrder}){return <div className="tabs">{TABS.map(([id,label,ic])=>{const on=tab===id;const c=on?"#163C34":"#9AA49C";const badge=(id==="scan"&&expCount>0)||(id==="order"&&canOrder);return <button key={id} className={"tab"+(on?" on":"")} onClick={()=>setTab(id)}><div className="ti">{ic(c)}{badge?<span className="pip"/>:null}</div>{label}</button>;})}</div>;}
+
+/* ===================== TODAY ===================== */
+function Today({inv,grade,co2Saved,setTab}){
+  const exp=[...inv].filter(i=>i.days<=5).sort((a,b)=>a.days-b.days);
+  return <div className="screen fade"><div className="pad">
+    <div style={{marginTop:6,marginBottom:14}}><Eyebrow>La Ferté-sous-Jouarre</Eyebrow>
+      <div className="h1" style={{marginTop:8}}>Eat well, waste less,<br/>leave less behind.</div></div>
+    <div className="card" style={{padding:18,marginBottom:14,background:"linear-gradient(165deg,#1E5245,#163C34)",border:"none",color:"#fff"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+        <div><div className="eyebrow" style={{color:"rgba(255,255,255,.6)"}}>This week’s basket</div>
+          <div className="disp" style={{fontSize:46,color:"#fff",marginTop:10}}>{inv.length?grade.letter:"·"}<span style={{color:"var(--gold-soft)",fontSize:30}}>{grade.sign}</span></div>
+          <div style={{fontSize:12.5,color:"rgba(255,255,255,.72)",marginTop:2}}>Carbon footprint grade</div></div>
+        <div style={{textAlign:"right"}}><div className="disp" style={{fontSize:30,color:"var(--gold-soft)"}}>{co2Saved.toFixed(1)}</div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,.7)",lineHeight:1.3}}>kg CO₂e saved<br/>this month</div></div>
+      </div>
+      <button className="btn gold" style={{marginTop:16}} onClick={()=>setTab(inv.length?"carbon":"scan")}>{inv.length?"See carbon breakdown":"Add your fridge"} {I.arrow("#2c2406")}</button>
+    </div>
+    {inv.length===0 ? <Empty title="Your fridge is empty" desc="Snap a photo of your fridge or add items by hand to start tracking waste and carbon." cta="Open fridge" onCta={()=>setTab("scan")}/> : <>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",margin:"4px 2px 10px"}}><div className="h2">Expiring soon</div><span className="pill" style={{background:exp.length?"rgba(192,86,59,.1)":"var(--sage-2)",color:exp.length?"var(--bad)":"var(--forest)"}}>{exp.length} items</span></div>
+      {exp.length? <div className="card flat" style={{overflow:"hidden",marginBottom:14}}>{exp.map((it,i)=>(<div key={it.id}><div style={{display:"flex",alignItems:"center",gap:11,padding:"13px 15px"}}><span className={"edot urg-"+urgency(it.days)}/><div style={{flex:1}}><div style={{fontWeight:600,fontSize:14.5}}>{it.name}</div><div className="sub" style={{fontSize:12}}>{it.k} · {it.qty}</div></div><div className="mono" style={{fontSize:12,color:it.days<=1?"var(--bad)":it.days<=3?"var(--warn)":"var(--muted)"}}>{it.days<=0?"today":it.days===1?"1 day":it.days+" days"}</div></div>{i<exp.length-1&&<div className="div" style={{marginLeft:15}}/>}</div>))}</div>
+        : <div className="card" style={{padding:16,marginBottom:14}}><div className="sub">Nothing is expiring in the next three days. Good week.</div></div>}
+      <div style={{display:"flex",gap:10}}><button className="btn" style={{flex:1}} onClick={()=>setTab("scan")}>{I.scan("#fff")} Fridge</button><button className="btn ghost" style={{flex:1}} onClick={()=>setTab("recipe")}>{I.spark()} Cook this</button></div>
+    </>}
+  </div></div>;
+}
+
+/* ===================== FRIDGE (scan + CRUD) ===================== */
+function fileToB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});}
+/* downscale + re-encode any photo (incl. HEIC where the browser can decode it) to a small JPEG */
+function prepImage(file){return new Promise((resolve,reject)=>{
+  const url=URL.createObjectURL(file); const img=new Image();
+  img.onload=()=>{ const max=1024; const sc=Math.min(1,max/Math.max(img.width,img.height));
+    const cw=Math.max(1,Math.round(img.width*sc)), ch=Math.max(1,Math.round(img.height*sc));
+    const c=document.createElement("canvas"); c.width=cw; c.height=ch;
+    try{ c.getContext("2d").drawImage(img,0,0,cw,ch); const d=c.toDataURL("image/jpeg",0.85);
+      URL.revokeObjectURL(url); resolve({b64:d.split(",")[1],media:"image/jpeg",preview:d}); }
+    catch(e){ URL.revokeObjectURL(url); reject(e); } };
+  img.onerror=()=>{ URL.revokeObjectURL(url); reject(new Error("decode")); };
+  img.src=url;
+});}
+/* Send the photo to the vision model and return detected items with bounding boxes. */
+async function detectFood(b64,media){
+  const sys=`You are a fridge photo food detector. Identify the distinct food items visible. For each item return:
+- name: short label
+- category: exactly one of Vegetables, Fruit, Dairy, Protein, Bakery, Plant milk, Pantry
+- days: integer, estimated days until it spoils
+- qty: short quantity string
+- box: bounding box as [x,y,w,h], each a fraction 0 to 1 of image width/height (x,y is the top-left corner)
+Reply with ONLY a JSON array, no prose, no code fences. Example: [{"name":"Eggs","category":"Protein","days":12,"qty":"6","box":[0.31,0.46,0.2,0.14]}]. Maximum 12 items. If no food is visible, reply [].`;
+  const data=await callClaude({model:"claude-sonnet-4-6",max_tokens:1500,system:sys,
+    messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:media,data:b64}},{type:"text",text:"Detect the food items and their bounding boxes."}]}]});
+  const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+  const match=text.match(/\[[\s\S]*\]/);
+  if(!match) throw new Error("No food found in that photo.");
+  return JSON.parse(match[0]);
+}
+
+function Fridge({inv,setInv,loadSample,toast,edit,openSettings,hasKey}){
+  const fileRef=useRef();
+  const [scanning,setScanning]=useState(false);
+  const [preview,setPreview]=useState(null);
+  const [detected,setDetected]=useState([]);   // items with .box, drawn over the photo
+  const [shown,setShown]=useState(0);           // how many boxes revealed so far
+  const [err,setErr]=useState(null);
+
+  // reveal detected boxes one by one for a scanning feel
+  function reveal(n){ return new Promise(res=>{ setShown(0); let i=0; const tick=()=>{ i++; setShown(i); if(i<n) setTimeout(tick,280); else setTimeout(res,450); }; setTimeout(tick,400); }); }
+
+  async function onPhoto(e){
+    const f=e.target.files&&e.target.files[0]; e.target.value="";
+    if(!f) return;
+    setErr(null); setScanning(true); setShown(0); setDetected([]);
+    // shrink + re-encode to JPEG (handles HEIC, large photos)
+    let prep=null;
+    try{ prep=await prepImage(f); setPreview(prep.preview); }
+    catch(_){
+      try{ const b64=await fileToB64(f); prep={b64,media:f.type||"image/jpeg"}; setPreview(URL.createObjectURL(f)); }
+      catch(_2){ setScanning(false); setErr("That image format isn’t supported. Try a JPEG, or add items by hand."); return; }
+    }
+    // real detection on the actual photo
+    let arr=null, reason="";
+    try{ arr=await detectFood(prep.b64,prep.media); }
+    catch(e){ reason=e.message||"Couldn’t read that photo."; }
+    if(!arr||!Array.isArray(arr)||!arr.length){ setScanning(false); setErr(reason||"No food found in that photo. Try a clearer, well-lit shot."); return; }
+    const items=arr.slice(0,12).map((d,i)=>{
+      const def=CAT_DEF[d.category]||CAT_DEF.Pantry;
+      const k=CATS.includes(d.category)?d.category:"Pantry";
+      const box=Array.isArray(d.box)&&d.box.length===4&&d.box.every(n=>Number.isFinite(+n))
+        ? d.box.map(n=>Math.max(0,Math.min(1,+n)))
+        : [0.1+(i%3)*0.3, 0.1+Math.floor(i/3)*0.22, 0.22, 0.16];
+      return {id:uid(),name:String(d.name||"Item"),k,qty:String(d.qty||"1"),
+        days:Number.isFinite(+d.days)?Math.max(0,Math.round(+d.days)):5,co2:def.co2,wkg:def.wkg,origin:"Detected",box};
+    });
+    setDetected(items);
+    await reveal(items.length);
+    setInv(prev=>[...items,...prev.filter(p=>p.origin!=="Detected")]);
+    setScanning(false); setShown(items.length);
+    const soon=items.filter(i=>i.days<=3).length;
+    toast(`Detected ${items.length} items, ${soon} expiring soon.`);
+  }
+
+  return <div className="screen fade"><div className="pad">
+    <div style={{margin:"6px 0 12px"}}><Eyebrow>Fridge · vision detection</Eyebrow>
+      <div className="h1" style={{marginTop:8}}>Your fridge</div>
+      <div className="sub" style={{marginTop:6}}>Photograph your fridge and the model reads what is inside. The image is processed then discarded.</div></div>
+
+    <div className="viewfinder" style={preview?{aspectRatio:"auto"}:{}}>
+      {preview && <img src={preview} style={{display:"block",width:"100%",height:"auto"}}/>}
+      {[0,1,2,3].map(i=>{const m=10,s={position:"absolute"};if(i==0){s.top=m;s.left=m;s.borderRight="none";s.borderBottom="none";s.borderRadius="8px 0 0 0";}if(i==1){s.top=m;s.right=m;s.borderLeft="none";s.borderBottom="none";s.borderRadius="0 8px 0 0";}if(i==2){s.bottom=m;s.left=m;s.borderRight="none";s.borderTop="none";s.borderRadius="0 0 0 8px";}if(i==3){s.bottom=m;s.right=m;s.borderLeft="none";s.borderTop="none";s.borderRadius="0 0 8px 0";}return <span key={i} className="bracket" style={s}/>;})}
+      {scanning&&shown===0&&<div className="scanline"/>}
+      {(scanning||shown>0)&&preview&&detected.slice(0,shown).map((it,i)=>(
+        <div key={it.id} className="bbox" style={{left:(it.box[0]*100)+"%",top:(it.box[1]*100)+"%",width:(it.box[2]*100)+"%",height:(it.box[3]*100)+"%"}}><span>{it.name}</span></div>
+      ))}
+      {!preview&&<div style={{position:"absolute",inset:0,display:"grid",placeItems:"center",color:"rgba(255,255,255,.6)",fontSize:13,textAlign:"center",padding:24}}><div><div style={{marginBottom:8,display:"flex",justifyContent:"center"}}>{I.cam("rgba(231,206,114,.9)")}</div>Tap below to photograph your fridge</div></div>}
+      {scanning&&<div style={{position:"absolute",bottom:12,left:0,right:0,textAlign:"center",color:"var(--gold-soft)",fontSize:12,fontFamily:"'Space Mono'"}}>{shown===0?"Reading items…":`Detecting… ${shown}/${detected.length}`}</div>}
+    </div>
+
+    <input ref={fileRef} type="file" accept="image/*" style={{display:"none"}} onChange={onPhoto}/>
+    <div style={{display:"flex",gap:10,marginTop:14}}>
+      <button className="btn" style={{flex:1}} onClick={()=>fileRef.current.click()} disabled={scanning}>{scanning?<><span className="spin"/> Reading…</>:<>{I.cam()} Scan fridge</>}</button>
+      <button className="btn ghost" style={{flex:1}} onClick={()=>edit(null)}>{I.plus("#163C34")} Add by hand</button>
+    </div>
+    {inv.length===0 && <button className="btn ghost" style={{marginTop:10}} onClick={loadSample}>Load sample fridge</button>}
+    {err && <div className="card" style={{marginTop:12,padding:14,background:"rgba(192,86,59,.07)",borderColor:"rgba(192,86,59,.3)"}}>
+      <div style={{display:"flex",gap:9,alignItems:"flex-start"}}>{I.alert("#C0563B")}<div style={{flex:1}}>
+        <b style={{fontSize:13.5}}>Couldn’t read that photo</b>
+        <div className="sub" style={{fontSize:12,marginTop:2}}>{err}</div>
+        <div style={{display:"flex",gap:8,marginTop:11,flexWrap:"wrap"}}>
+          <button className="btn sm" onClick={()=>fileRef.current.click()}>Try another photo</button>
+          {!hasKey && <button className="btn sm ghost" onClick={openSettings}>Add API key</button>}
+          <button className="btn sm ghost" onClick={()=>edit(null)}>Add by hand</button>
+          {inv.length===0 && <button className="btn sm ghost" onClick={loadSample}>Sample fridge</button>}
+        </div></div></div></div>}
+
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",margin:"22px 2px 8px"}}>
+      <div className="h2">Inventory <span className="kbd">({inv.length})</span></div>
+      {inv.length>0&&<span className="pill" style={{background:"var(--sage-2)",color:"var(--forest)"}}>{I.check("var(--forest)")} on device</span>}
+    </div>
+    {inv.length===0 ? <div className="card" style={{padding:18}}><div className="sub">No items yet. Scan a photo, add by hand, or load the sample fridge to explore.</div></div>
+      : <div className="card flat" style={{overflow:"hidden"}}>{[...inv].sort((a,b)=>a.days-b.days).map((it,i,a)=>(<div key={it.id}><button onClick={()=>edit(it)} style={{display:"flex",alignItems:"center",gap:11,padding:"12px 14px",width:"100%",textAlign:"left"}}><span className={"edot urg-"+urgency(it.days)}/><div style={{flex:1}}><div style={{fontWeight:600,fontSize:14}}>{it.name}</div><div className="sub" style={{fontSize:11.5}}>{it.k} · {it.qty} · {it.days<=0?"expired":it.days+"d"}</div></div><span className="mono" style={{fontSize:11.5,color:effCo2(it,false)>4?"var(--bad)":"var(--muted)"}}>{effCo2(it,false).toFixed(1)} kg/kg</span><span style={{marginLeft:8}}>{I.edit("#9AA49C")}</span></button>{i<a.length-1&&<div className="div" style={{marginLeft:14}}/>}</div>))}</div>}
+  </div></div>;
+}
+
+/* item add/edit sheet */
+function ItemSheet({item,close,save,remove}){
+  const [name,setName]=useState(item?item.name:"");
+  const [k,setK]=useState(item?item.k:"Vegetables");
+  const [qty,setQty]=useState(item?item.qty:"1");
+  const [days,setDays]=useState(item?item.days:5);
+  function commit(){
+    if(!name.trim())return;
+    const def=CAT_DEF[k]||CAT_DEF.Pantry;
+    save({id:item?item.id:uid(),name:name.trim(),k,qty:qty||"1",days:Math.max(0,days),
+      co2:item&&item.k===k?item.co2:def.co2, wkg:item?item.wkg:def.wkg, origin:item?item.origin:"Added by you",
+      transport:item?item.transport:undefined, localAlt:item?item.localAlt:undefined});
+  }
+  return <><div className="scrim" onClick={close}/><div className="sheet"><div className="grab"/>
+    <div className="pad" style={{paddingTop:8}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><div className="h2">{item?"Edit item":"Add item"}</div><button className="iconbtn" onClick={close}>{I.close()}</button></div>
+      <div className="eyebrow" style={{marginBottom:8}}>Name</div>
+      <input className="field" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Carrots" autoFocus/>
+      <div className="eyebrow" style={{margin:"16px 0 8px"}}>Category</div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{CATS.map(c=><button key={c} className={"chip"+(k===c?" on":"")} onClick={()=>setK(c)}>{c}</button>)}</div>
+      <div style={{display:"flex",gap:12,marginTop:16}}>
+        <div style={{flex:1}}><div className="eyebrow" style={{marginBottom:8}}>Quantity</div><input className="field" value={qty} onChange={e=>setQty(e.target.value)} placeholder="1"/></div>
+        <div style={{flex:1}}><div className="eyebrow" style={{marginBottom:8}}>Days to expiry</div>
+          <div className="stepper"><button onClick={()=>setDays(d=>Math.max(0,d-1))}>−</button><div className="v">{days}</div><button onClick={()=>setDays(d=>d+1)}>+</button></div></div>
+      </div>
+      <div className="sub" style={{fontSize:11.5,margin:"12px 0 0"}}>Carbon intensity is estimated from the category ({(CAT_DEF[k]||CAT_DEF.Pantry).co2} kg CO₂e/kg).</div>
+      <button className="btn" style={{marginTop:18}} onClick={commit}>{item?"Save changes":"Add to fridge"}</button>
+      {item&&<button className="btn danger" style={{marginTop:10}} onClick={()=>remove(item.id)}>{I.trash()} Remove from fridge</button>}
+    </div></div></>;
+}
+
+/* ===================== CARBON ===================== */
+function Carbon({inv,swaps,setSwaps,addSaved,toast,setTab}){
+  if(!inv.length) return <div className="screen fade"><div className="pad"><div style={{margin:"6px 0 0"}}><Eyebrow>Carbon score</Eyebrow></div><Empty title="No basket to score yet" desc="Add items to your fridge and your weekly carbon grade appears here." cta="Open fridge" onCta={()=>setTab("scan")}/></div></div>;
+  const {avg,total}=intensity(inv,swaps); const g=gradeOf(avg);
+  const ranked=[...inv].map(it=>({...it,c:it.wkg*effCo2(it,swaps[it.id])})).sort((a,b)=>b.c-a.c);
+  const maxc=ranked[0]?ranked[0].c:1;
+  const flags=inv.filter(it=>it.localAlt&&!swaps[it.id]);
+  function swap(it){setSwaps(s=>({...s,[it.id]:true}));const saved=it.wkg*(effCo2(it,false)-effCo2(it,true));addSaved(saved);toast(`Swapped to ${it.localAlt.name}. ${saved.toFixed(1)} kg CO₂e avoided.`);}
+  return <div className="screen fade"><div className="pad">
+    <div style={{margin:"6px 0 14px"}}><Eyebrow>Estimated from food category factors</Eyebrow><div className="h1" style={{marginTop:8}}>Carbon score</div></div>
+    <div className="card" style={{padding:18,display:"flex",gap:16,alignItems:"center",marginBottom:14}}>
+      <div className="gradewrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="var(--line-2)" strokeWidth="12"/><circle cx="70" cy="70" r="60" fill="none" stroke={g.color} strokeWidth="12" strokeLinecap="round" strokeDasharray={2*Math.PI*60} strokeDashoffset={2*Math.PI*60*(Math.min(1,avg/6))} transform="rotate(-90 70 70)" style={{transition:"stroke-dashoffset .8s,stroke .4s"}}/></svg><div className="gradeletter" style={{color:g.color}}>{g.letter}<span style={{fontSize:30}}>{g.sign}</span></div></div>
+      <div style={{flex:1}}><div className="mono" style={{fontSize:26,fontWeight:700}}>{total.toFixed(1)}<span style={{fontSize:14,color:"var(--muted)"}}> kg</span></div><div className="sub" style={{fontSize:12}}>CO₂e in your fridge</div><div className="div" style={{margin:"12px 0"}}/><div className="mono" style={{fontSize:13,fontWeight:700}}>{avg.toFixed(2)} kg/kg</div><div className="sub" style={{fontSize:11.5}}>average intensity</div></div>
+    </div>
+    {flags.length>0&&<div className="card" style={{padding:14,marginBottom:14,background:"rgba(210,154,46,.08)",borderColor:"rgba(210,154,46,.3)"}}><div style={{display:"flex",gap:8,alignItems:"center",marginBottom:4}}>{I.alert()}<b style={{fontSize:13.5}}>Origin alerts</b></div>{flags.map(it=>(<div key={it.id} style={{display:"flex",alignItems:"center",gap:10,paddingTop:10}}><div style={{flex:1}}><div style={{fontSize:13.5,fontWeight:600}}>{it.name} shipped from {it.origin}</div><div className="sub" style={{fontSize:11.5}}>Local swap: {it.localAlt.name} · {it.localAlt.origin}</div></div><button className="btn sm gold" onClick={()=>swap(it)}>Swap</button></div>))}</div>}
+    <div className="h2" style={{margin:"6px 2px 6px"}}>Top contributors</div>
+    <div className="card" style={{padding:"6px 14px 12px",marginBottom:14}}>{ranked.slice(0,6).map(it=>{const c=it.c;return <Bar key={it.id} label={it.name} value={c} max={maxc} color={c>1.5?"var(--E)":c>0.7?"var(--C)":"var(--B)"} right={c.toFixed(1)+" kg"}/>;})}</div>
+    <div className="sub" style={{textAlign:"center",fontSize:11.5}}>Grade scale: A &lt; 1.0 · B &lt; 2.4 · C &lt; 4.4 · D &lt; 7 · E &lt; 10 · F ≥ 10 kg CO₂e per kg.</div>
+  </div></div>;
+}
+
+/* ===================== RECIPE ===================== */
+const CURATED={
+  none:{title:"Broccoli & egg frittata",why:"Rescues your broccoli and eggs before they turn.",servings:2,time_min:25,ingredients:[{name:"Broccoli",amount:"1 head",fromFridge:true},{name:"Eggs",amount:"6",fromFridge:true},{name:"Cheese",amount:"60 g",fromFridge:true},{name:"Olive oil",amount:"1 tbsp",fromFridge:false},{name:"Salt & pepper",amount:"to taste",fromFridge:false}],steps:["Steam the broccoli florets for 4 minutes, then drain.","Whisk the eggs with salt, pepper and grated cheese.","Soften the broccoli in an oiled oven-proof pan for 2 minutes.","Pour the eggs over, cook 3 minutes, then grill 6 minutes.","Rest, slice and serve warm."],macros:{kcal:320,protein_g:24,carbs_g:8,fat_g:21},co2e_per_serving_kg:0.6},
+  vegan:{title:"Spinach & carrot chickpea hash",why:"Uses spinach and carrots before they wilt, fully plant based.",servings:2,time_min:20,ingredients:[{name:"Spinach",amount:"1 bag",fromFridge:true},{name:"Carrots",amount:"2",fromFridge:true},{name:"Chickpeas",amount:"1 tin",fromFridge:false},{name:"Olive oil",amount:"1 tbsp",fromFridge:false},{name:"Cumin & paprika",amount:"1 tsp",fromFridge:false}],steps:["Grate the carrots and crisp them in oil for 4 minutes.","Add drained chickpeas and spices, fry until golden.","Fold through the spinach until just wilted.","Season and serve with bread."],macros:{kcal:290,protein_g:13,carbs_g:38,fat_g:10},co2e_per_serving_kg:0.4},
+};
+function dietViolation(rec,diet){const n=rec.ingredients.map(i=>i.name.toLowerCase()).join(" ");const bad={vegan:["egg","cheese","chicken","yogurt","butter","milk","beef","fish","honey","ham"],vegetarian:["chicken","beef","fish","pork","bacon","ham"],"gluten-free":["bread","flour","pasta","wheat","couscous","sourdough"],"dairy-free":["cheese","butter","yogurt","milk","cream"]}[diet]||[];return bad.find(w=>n.includes(w))||null;}
+function groundIngredients(rec,inv){const names=inv.map(i=>i.name.toLowerCase());rec.ingredients.forEach(g=>{const a=g.name.toLowerCase();g.fromFridge=names.some(n=>a.includes(n.split(" ")[0])||n.includes(a.split(" ")[0]));});return rec;}
+/* builds an anti-waste recipe from whatever is actually in the fridge, no model needed */
+function offlineRecipe(inv,diet){
+  const byCat=c=>inv.filter(i=>i.k===c);
+  const has=w=>inv.some(i=>i.name.toLowerCase().includes(w));
+  const item=w=>{const it=inv.find(i=>i.name.toLowerCase().includes(w));return it?it.name:null;};
+  const fruit=byCat("Fruit"), veg=byCat("Vegetables"), dairy=byCat("Dairy"), protein=byCat("Protein");
+  const sorted=[...inv].sort((a,b)=>a.days-b.days);
+  const expList=sorted.filter(i=>i.days<=6); const exp=(expList.length?expList:sorted).slice(0,2).map(i=>i.name);
+  const why=`Uses your ${exp.join(" and ")} before they turn.`;
+  const eggs=item("egg"), yog=dairy.find(d=>/yogurt|yoghurt/i.test(d.name)), cheese=dairy.find(d=>/cheese/i.test(d.name));
+  const meat=protein.find(p=>/chicken|pork|beef|turkey|fish|salmon|ham|bacon/i.test(p.name));
+  const vegan=diet==="vegan", df=diet==="dairy-free"||vegan, veggie=diet==="vegetarian"||vegan;
+  let r;
+  if(fruit.length && yog && !df){
+    const f=fruit.slice(0,2);
+    r={title:f.length>1?`${f[0].name} and ${f[1].name} yogurt bowl`:`${f[0].name} yogurt bowl`,why,servings:1,time_min:6,
+      ingredients:[...f.map(x=>({name:x.name,amount:"1 handful"})),{name:yog.name,amount:"150 g"},has("almond")?{name:"Almond butter",amount:"1 tbsp"}:null,{name:"Oats",amount:"3 tbsp"},{name:"Honey",amount:"1 tsp"}].filter(Boolean),
+      steps:["Chop the fruit into bite-size pieces.","Spoon the yogurt into a bowl.","Top with the fruit and a swirl of almond butter.","Scatter over the oats, drizzle with honey and serve."],
+      macros:{kcal:320,protein_g:16,carbs_g:40,fat_g:11},co2e_per_serving_kg:0.4};
+  } else if(fruit.length && (has("coconut")||has("milk")||yog)){
+    const liquid=has("coconut")?(item("coconut")||"coconut water"):(!df&&has("milk"))?"milk":(!df&&yog)?"yogurt":"water";
+    r={title:`${fruit[0].name} smoothie`,why,servings:1,time_min:5,
+      ingredients:[...fruit.slice(0,2).map(x=>({name:x.name,amount:"1 handful"})),{name:liquid,amount:"200 ml"},has("almond")?{name:"Almond butter",amount:"1 tsp"}:null,{name:"Ice",amount:"a few cubes"}].filter(Boolean),
+      steps:["Add the fruit to a blender.",`Pour in the ${liquid}.`,"Add almond butter and a few ice cubes.","Blend until smooth and pour."],
+      macros:{kcal:210,protein_g:6,carbs_g:34,fat_g:5},co2e_per_serving_kg:0.3};
+  } else if(eggs && veg.length && !vegan){
+    const v=veg.slice(0,2);
+    r={title:`${v[0].name} frittata`,why,servings:2,time_min:22,
+      ingredients:[{name:"Eggs",amount:"6"},...v.map(x=>({name:x.name,amount:"1 handful"})),(cheese&&!df)?{name:cheese.name,amount:"50 g"}:null,{name:"Olive oil",amount:"1 tbsp"},{name:"Salt & pepper",amount:"to taste"}].filter(Boolean),
+      steps:["Soften the chopped vegetables in an oiled oven-proof pan for 4 minutes.","Whisk the eggs with salt and pepper.","Pour over the vegetables and cook 3 minutes.","Finish under the grill for 6 minutes until set.","Slice and serve."],
+      macros:{kcal:300,protein_g:21,carbs_g:7,fat_g:20},co2e_per_serving_kg:0.6};
+  } else if(meat && !veggie){
+    r={title:`${meat.name} traybake`,why,servings:2,time_min:35,
+      ingredients:[{name:meat.name,amount:"1 pack"},...veg.slice(0,2).map(x=>({name:x.name,amount:"1 handful"})),{name:"Olive oil",amount:"2 tbsp"},{name:"Herbs & garlic",amount:"to taste"}],
+      steps:["Heat the oven to 200°C.","Toss the chopped vegetables and protein with oil, herbs and garlic.","Spread on a tray in one layer.","Roast 25 to 30 minutes until cooked through.","Rest briefly and serve."],
+      macros:{kcal:430,protein_g:34,carbs_g:18,fat_g:24},co2e_per_serving_kg:1.4};
+  } else {
+    const top=sorted.slice(0,3);
+    r={title:`${top[0].name} clear-out plate`,why,servings:1,time_min:12,
+      ingredients:[...top.map(x=>({name:x.name,amount:"1 portion"})),{name:"Olive oil",amount:"1 tbsp"},{name:"Salt, pepper, lemon",amount:"to taste"}],
+      steps:["Prep the items closest to their date.","Combine them simply, raw or quickly pan-fried.","Season with oil, salt, pepper and a squeeze of lemon.","Plate and enjoy while fresh."],
+      macros:{kcal:280,protein_g:10,carbs_g:30,fat_g:12},co2e_per_serving_kg:0.5};
+  }
+  if(dietViolation(r,diet) && fruit.length){
+    r={title:`${fruit[0].name} fruit salad`,why,servings:1,time_min:6,
+      ingredients:[...fruit.slice(0,3).map(x=>({name:x.name,amount:"1 handful"})),{name:"Lemon juice",amount:"1 tsp"},{name:"Mint",amount:"a few leaves"}],
+      steps:["Chop all the fruit into a bowl.","Toss with the lemon juice.","Tear over a little mint and serve."],
+      macros:{kcal:160,protein_g:2,carbs_g:38,fat_g:1},co2e_per_serving_kg:0.3};
+  }
+  return groundIngredients(r,inv);
+}
+function Recipe({inv,diet,setDiet,saved,save,toast,setTab,hasKey}){
+  const [state,setState]=useState("ready"); const [rec,setRec]=useState(null); const [src,setSrc]=useState("offline");
+  const sorted=[...inv].sort((a,b)=>a.days-b.days);
+  const rescue=sorted.filter(i=>i.days<=6);
+  const show=rescue.length>=3?rescue.slice(0,5):sorted.slice(0,4);
+  if(!inv.length) return <div className="screen fade"><div className="pad"><div style={{margin:"6px 0 0"}}><Eyebrow>Recipe engine</Eyebrow></div><Empty title="Nothing to cook yet" desc="Add items to your fridge and a recipe is built from what’s expiring." cta="Open fridge" onCta={()=>setTab("scan")}/></div></div>;
+  async function generate(){
+    setState("loading"); setRec(null);
+    if(hasKey){
+      try{
+        const invLines=inv.map(i=>`${i.name} | ${i.days}d | ${i.k}`).join("\n");
+        const sys=`You are the Recipe Engine inside a sustainable food app. Generate exactly ONE anti-waste recipe prioritising the items closest to expiry. Use only ingredients from the inventory plus common pantry staples. Respect the dietary constraint strictly. Reply with ONLY a JSON object, no prose, no fences: {"title":string,"why":string,"servings":number,"time_min":number,"ingredients":[{"name":string,"amount":string,"fromFridge":boolean}],"steps":[4 to 6 strings],"macros":{"kcal":number,"protein_g":number,"carbs_g":number,"fat_g":number},"co2e_per_serving_kg":number}`;
+        const user=`Inventory:\n${invLines}\n\nExpiring soonest: ${show.map(i=>i.name).join(", ")}\nDietary constraint: ${diet}\nGenerate the recipe now.`;
+        const data=await callClaude({model:"claude-sonnet-4-6",max_tokens:1300,system:sys,messages:[{role:"user",content:user}]});
+        const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+        const recipe=JSON.parse(text.replace(/```json|```/g,"").trim());
+        if(!recipe.title||!Array.isArray(recipe.ingredients)||!Array.isArray(recipe.steps)||dietViolation(recipe,diet)) throw new Error("bad");
+        groundIngredients(recipe,inv); setRec(recipe); setSrc("ai"); setState("done"); return;
+      }catch(e){}
+    }
+    await new Promise(r=>setTimeout(r,650));
+    setRec(offlineRecipe(inv,diet)); setSrc("offline"); setState("done");
+  }
+  const diets=["none","vegetarian","vegan","gluten-free","dairy-free"];
+  const grounded=rec?rec.ingredients.filter(i=>i.fromFridge).length:0;
+  const isSaved=rec&&saved.includes(rec.title);
+  return <div className="screen fade"><div className="pad">
+    <div style={{margin:"6px 0 12px"}}><Eyebrow>Recipe engine</Eyebrow><div className="h1" style={{marginTop:8}}>Cook what’s expiring</div><div className="sub" style={{marginTop:6}}>A recipe built from your soonest-to-expire items. Every ingredient is grounded in your fridge.</div></div>
+    <div className="eyebrow" style={{margin:"4px 0 8px"}}>Dietary filter</div>
+    <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:6,marginBottom:12}}>{diets.map(d=><button key={d} className={"chip"+(diet===d?" on":"")} onClick={()=>setDiet(d)} style={{flex:"none",textTransform:"capitalize"}}>{d==="none"?"No filter":d}</button>)}</div>
+    <div className="card" style={{padding:13,marginBottom:12,background:"var(--paper-2)"}}><div className="eyebrow" style={{marginBottom:8}}>Rescuing {show.length} items closest to expiry</div><div style={{display:"flex",flexWrap:"wrap",gap:7}}>{show.map(i=><span key={i.id} className="pill" style={{background:"#fff",border:"1px solid var(--line)"}}><span className={"edot urg-"+urgency(i.days)}/>{i.name} <span className="kbd" style={{fontSize:10}}>{i.days}d</span></span>)}</div></div>
+    <button className="btn gold" onClick={generate} disabled={state==="loading"}>{state==="loading"?<><span className="spin dark"/> Building recipe…</>:<>{I.spark("#2c2406")} Generate recipe</>}</button>
+    {rec&&<div className="card rise" style={{marginTop:14,overflow:"hidden"}}>
+      <div style={{padding:"16px 16px 0"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>{src==="ai"?<AIBadge/>:<span className="pill" style={{background:"var(--sage-2)",color:"var(--forest)"}}>{I.leaf("var(--forest)")} Built from your fridge</span>}</div>
+        <div className="h2" style={{fontSize:23}}>{rec.title}</div><div className="sub" style={{marginTop:6}}>{rec.why}</div>
+        <div style={{display:"flex",gap:16,margin:"12px 0 4px"}}><div><div className="mono" style={{fontWeight:700,fontSize:15}}>{rec.time_min}'</div><div className="kbd" style={{fontSize:10}}>time</div></div><div><div className="mono" style={{fontWeight:700,fontSize:15}}>{rec.servings}</div><div className="kbd" style={{fontSize:10}}>servings</div></div><div><div className="mono" style={{fontWeight:700,fontSize:15,color:"var(--good)"}}>{rec.co2e_per_serving_kg} kg</div><div className="kbd" style={{fontSize:10}}>CO₂e / serving</div></div></div></div>
+      <div style={{display:"flex",gap:6,flexWrap:"wrap",padding:"10px 16px",margin:"6px 0"}}>{[["Schema",true],["Allergen filter",!dietViolation(rec,diet)],["Grounding "+grounded+"/"+rec.ingredients.length,true],["Content",true]].map(([l,ok])=><span key={l} className="pill" style={{background:ok?"var(--sage-2)":"rgba(192,86,59,.12)",color:ok?"var(--forest)":"var(--bad)",fontSize:10.5}}>{ok?I.check("var(--forest)"):null}{l}</span>)}</div>
+      <div className="div"/>
+      <div style={{padding:16}}><div className="eyebrow" style={{marginBottom:8}}>Ingredients</div>{rec.ingredients.map((g,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",fontSize:13.5}}><span>{g.fromFridge&&<span style={{marginRight:6}}>{I.leaf("var(--good)")}</span>}{g.name}</span><span className="kbd">{g.amount}</span></div>))}
+        <div className="eyebrow" style={{margin:"14px 0 8px"}}>Method</div>{rec.steps.map((s,i)=>(<div key={i} style={{display:"flex",gap:10,padding:"6px 0",fontSize:13.5,lineHeight:1.5}}><span className="mono" style={{color:"var(--gold)",fontWeight:700}}>{i+1}</span><span>{s}</span></div>))}
+        <div className="div" style={{margin:"14px 0"}}/><div className="eyebrow" style={{marginBottom:8}}>Per serving</div>
+        <div style={{display:"flex",gap:8}}>{[["kcal",rec.macros.kcal],["Protein",rec.macros.protein_g+"g"],["Carbs",rec.macros.carbs_g+"g"],["Fat",rec.macros.fat_g+"g"]].map(([l,v])=><div key={l} className="tile" style={{flex:1,textAlign:"center",padding:"10px 4px"}}><div className="mono" style={{fontWeight:700,fontSize:14}}>{v}</div><div className="kbd" style={{fontSize:9.5}}>{l}</div></div>)}</div>
+        <button className="btn" style={{marginTop:14}} disabled={isSaved} onClick={()=>{save(rec.title);toast("Saved to your meal plan.");}}>{isSaved?<>{I.check("#fff")} Saved to meal plan</>:"Save to meal plan"}</button>
+      </div>
+    </div>}
+  </div></div>;
+}
+
+/* ===================== ORDER ===================== */
+function Order({killed,setKilled,cap,setCap,auto,setAuto,log,addLog,toast}){
+  const [placed,setPlaced]=useState(false);
+  const proposal=PRODUCERS;
+  const total=proposal.reduce((s,p)=>s+p.price,0);
+  const co2=proposal.reduce((s,p)=>s+(p.super-p.co2),0);
+  const overCap=total>cap;
+  function place(){ if(killed){toast("Agent is paused. Lift the kill switch to order.");return;} setPlaced(true); addLog({t:"Order placed",d:`${proposal.length} items · €${total.toFixed(2)} · ${co2.toFixed(1)} kg CO₂e under supermarket · within 15 km`,time:"just now"}); toast("Order confirmed with local producers."); }
+  return <div className="screen fade"><div className="pad">
+    <div style={{margin:"6px 0 10px"}}><Eyebrow>Replenishment agent · local sourcing</Eyebrow><div className="h1" style={{marginTop:8}}>Local order</div></div>
+    <AIBadge label="autonomous agent"/>
+    {killed&&<div className="card" style={{marginTop:12,padding:14,background:"rgba(192,86,59,.08)",borderColor:"rgba(192,86,59,.35)",display:"flex",gap:10,alignItems:"center"}}>{I.power()}<div style={{flex:1}}><b style={{fontSize:13.5}}>Agent paused</b><div className="sub" style={{fontSize:12}}>All autonomous actions are stopped.</div></div><button className="btn sm ghost" onClick={()=>{setKilled(false);toast("Agent resumed.");}}>Resume</button></div>}
+    <div className="card" style={{marginTop:12,padding:14,marginBottom:12}}><div className="eyebrow" style={{marginBottom:8}}>Why this basket</div><div className="sub" style={{fontSize:13,lineHeight:1.55}}>Five staples are forecast to run out in 3 to 5 days. The agent sourced them within 15 km and stays under your €{cap} cap.</div></div>
+    <div className="card" style={{overflow:"hidden",marginBottom:12}}>{proposal.map((p,i)=>(<div key={i}><div style={{display:"flex",alignItems:"center",gap:11,padding:"13px 15px"}}><div style={{flex:1}}><div style={{fontWeight:600,fontSize:14}}>{p.item}</div><div className="sub" style={{fontSize:11.5,display:"flex",alignItems:"center",gap:5}}>{I.pin()}{p.producer} · {p.dist} km</div></div><div style={{textAlign:"right"}}><div className="mono" style={{fontSize:13,fontWeight:700}}>€{p.price.toFixed(2)}</div><div className="kbd" style={{fontSize:10,color:"var(--good)"}}>−{(p.super-p.co2).toFixed(1)} kg CO₂e</div></div></div>{i<proposal.length-1&&<div className="div" style={{marginLeft:15}}/>}</div>))}
+      <div className="div"/><div style={{display:"flex",justifyContent:"space-between",padding:"13px 15px",alignItems:"center"}}><div><div className="mono" style={{fontWeight:700,fontSize:15}}>€{total.toFixed(2)}</div><div className="kbd" style={{fontSize:10.5,color:overCap?"var(--bad)":"var(--muted)"}}>{overCap?`over €${cap} cap`:`under €${cap} cap · ${co2.toFixed(1)} kg saved`}</div></div><button className="btn sm" onClick={place} disabled={placed||killed} style={{minWidth:120}}>{placed?<>{I.check("#fff")} Ordered</>:auto?"Auto-approve on":"Confirm order"}</button></div></div>
+    <div className="card" style={{padding:"4px 14px",marginBottom:12}}><div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 0"}}><div style={{flex:1}}><b style={{fontSize:13.5}}>Auto-approve under €{cap}</b><div className="sub" style={{fontSize:11.5}}>Orders below the cap place without asking.</div></div><Toggle on={auto} onClick={()=>setAuto(a=>!a)}/></div><div className="div"/><div style={{padding:"13px 0 6px"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><b style={{fontSize:13.5}}>Weekly spend cap</b><span className="mono" style={{fontWeight:700}}>€{cap}</span></div><input type="range" min="15" max="80" value={cap} onChange={e=>setCap(+e.target.value)}/></div></div>
+    <button className="btn danger" onClick={()=>{setKilled(k=>!k);toast(killed?"Agent resumed.":"Kill switch on. Agent paused.");}}>{I.power()} {killed?"Resume agent":"Kill switch · pause all autonomous actions"}</button>
+    <div className="h2" style={{margin:"22px 2px 8px"}}>Agent audit log</div>
+    <div className="card" style={{overflow:"hidden"}}>{log.map((l,i)=>(<div key={i}><div style={{padding:"13px 15px"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}><b style={{fontSize:13.5}}>{l.t}</b><span className="kbd" style={{fontSize:10.5}}>{l.time}</span></div><div className="sub" style={{fontSize:12,marginTop:3}}>{l.d}</div></div>{i<log.length-1&&<div className="div" style={{marginLeft:15}}/>}</div>))}</div>
+    <div className="sub" style={{textAlign:"center",fontSize:11,marginTop:12}}>Limited-risk system under the EU AI Act. Art. 22 review and opt-out in Settings.</div>
+  </div></div>;
+}
+
+/* ===================== SETTINGS ===================== */
+function Settings({close,diet,setDiet,cap,setCap,auto,setAuto,killed,setKilled,toast,clearAll,apiKey,setApiKey}){
+  const Row=({title,desc,children})=>(<div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0"}}><div style={{flex:1}}><b style={{fontSize:14}}>{title}</b><div className="sub" style={{fontSize:12}}>{desc}</div></div>{children}</div>);
+  const [keyDraft,setKeyDraft]=useState(apiKey||"");
+  return <><div className="scrim" onClick={close}/><div className="sheet"><div className="grab"/>
+    <div className="pad" style={{paddingTop:8}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div className="h2">Settings & safeguards</div><button className="iconbtn" onClick={close}>{I.close()}</button></div>
+
+      <div className="eyebrow" style={{margin:"14px 0 2px"}}>Connection</div>
+      <div className="card" style={{padding:14}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><b style={{fontSize:14}}>AI features</b><span className="pill" style={{background:apiKey?"var(--sage-2)":"var(--line-2)",color:apiKey?"var(--forest)":"var(--muted)"}}>{apiKey?<>{I.check("var(--forest)")} key set</>:"no key"}</span></div>
+        <div className="sub" style={{fontSize:12,lineHeight:1.5}}>The photo scan and recipe engine call Claude. Inside the Claude app this works with no setup. To use them in a normal browser, add your own Anthropic API key. It is stored only on this device and sent straight to Anthropic.</div>
+        <input className="field" style={{marginTop:11}} type="password" value={keyDraft} onChange={e=>setKeyDraft(e.target.value)} placeholder="sk-ant-..." autoComplete="off"/>
+        <div style={{display:"flex",gap:8,marginTop:10}}>
+          <button className="btn sm" onClick={()=>{setApiKey(keyDraft.trim());toast(keyDraft.trim()?"API key saved on this device.":"API key cleared.");}}>Save key</button>
+          {apiKey&&<button className="btn sm ghost" onClick={()=>{setKeyDraft("");setApiKey("");toast("API key cleared.");}}>Clear</button>}
+        </div>
+        <div className="sub" style={{fontSize:11,marginTop:9}}>Get a key at console.anthropic.com. Keep it private, anyone with this device could read it.</div>
+      </div>
+
+      <div className="eyebrow" style={{margin:"18px 0 2px"}}>Oversight</div>
+      <div className="card" style={{padding:"2px 14px"}}><Row title="Kill switch" desc="Pause every autonomous action instantly."><Toggle on={killed} onClick={()=>{setKilled(k=>!k);toast(killed?"Agent resumed.":"Agent paused.");}}/></Row><div className="div"/><Row title="Auto-approve orders" desc={"Place orders under €"+cap+" without asking."}><Toggle on={auto} onClick={()=>setAuto(a=>!a)}/></Row><div className="div"/><div style={{padding:"14px 0"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><b style={{fontSize:14}}>Weekly spend cap</b><span className="mono" style={{fontWeight:700}}>€{cap}</span></div><input type="range" min="15" max="80" value={cap} onChange={e=>setCap(+e.target.value)}/></div></div>
+      <div className="eyebrow" style={{margin:"18px 0 2px"}}>Diet</div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{["none","vegetarian","vegan","gluten-free","dairy-free"].map(d=><button key={d} className={"chip"+(diet===d?" on":"")} onClick={()=>setDiet(d)} style={{textTransform:"capitalize"}}>{d==="none"?"No filter":d}</button>)}</div>
+      <div className="sub" style={{fontSize:11.5,marginTop:8}}>Allergen exclusions are enforced at the recipe tool-call level, not in the prompt.</div>
+      <div className="eyebrow" style={{margin:"18px 0 2px"}}>Privacy & rights</div>
+      <div className="card" style={{padding:"2px 14px"}}>{[["On-device scanning","Fridge photos are read then discarded. Faces are not retained."],["Right to erasure","Clear all app data below at any time."],["Art. 22 opt-out","Automated ordering can be turned off with human review on request."],["AI disclosure","A persistent label marks every AI-generated screen."]].map(([t,d],i,a)=><div key={t}><div style={{padding:"13px 0"}}><b style={{fontSize:13.5}}>{t}</b><div className="sub" style={{fontSize:12}}>{d}</div></div>{i<a.length-1&&<div className="div"/>}</div>)}</div>
+      <button className="btn danger" style={{marginTop:16}} onClick={clearAll}>{I.trash()} Clear all app data</button>
+      <div style={{display:"flex",alignItems:"center",gap:8,justifyContent:"center",margin:"18px 0 6px",color:"var(--muted)"}}><div className="leaf" style={{width:22,height:22,borderRadius:7}}>{I.leaf()}</div><span className="kbd" style={{fontSize:11}}>Team 5 · ESSEC · EU AI Act tiered, GDPR aligned</span></div>
+    </div></div></>;
+}
+
+/* ===================== APP ===================== */
+function App(){
+  const [hydrated,setHydrated]=useState(false);
+  const [tab,setTab]=useState("today");
+  const [inv,setInv]=useState([]);
+  const [swaps,setSwaps]=useState({});
+  const [diet,setDiet]=useState("none");
+  const [co2Saved,setCo2Saved]=useState(0);
+  const [saved,setSaved]=useState([]);
+  const [settings,setSettings]=useState(false);
+  const [editing,setEditing]=useState(false); // false | null(new) | item
+  const [cap,setCap]=useState(40);
+  const [auto,setAuto]=useState(false);
+  const [killed,setKilled]=useState(false);
+  const [apiKey,setApiKey]=useState("");
+  const [toastMsg,setToastMsg]=useState(null);
+  const [log,setLog]=useState([{t:"Basket forecast",d:"Five staples projected to deplete in 3 to 5 days. Sourced within 15 km.",time:"2h ago"}]);
+
+  useEffect(()=>{(async()=>{
+    const s=await store.get("cfc:v2",null);
+    if(s){ setInv(s.inv||[]); setSwaps(s.swaps||{}); setDiet(s.diet||"none"); setCo2Saved(s.co2Saved||0); setSaved(s.saved||[]); setCap(s.cap||40); setAuto(!!s.auto); setKilled(!!s.killed); if(s.log)setLog(s.log); }
+    const k=await store.get("cfc:key",""); setApiKey(k); USER_KEY=k||null;
+    setHydrated(true);
+  })();},[]);
+  useEffect(()=>{ if(hydrated) store.set("cfc:v2",{inv,swaps,diet,co2Saved,saved,cap,auto,killed,log}); },[hydrated,inv,swaps,diet,co2Saved,saved,cap,auto,killed,log]);
+  useEffect(()=>{ USER_KEY=apiKey||null; if(hydrated) store.set("cfc:key",apiKey); },[apiKey,hydrated]);
+
+  const toast=useCallback((m)=>{setToastMsg(m);setTimeout(()=>setToastMsg(null),2600);},[]);
+  const addSaved=(x)=>setCo2Saved(s=>+(s+x).toFixed(2));
+  const grade=useMemo(()=> inv.length?gradeOf(intensity(inv,swaps).avg):{letter:"·",sign:"",color:GRADE_COLOR.B},[inv,swaps]);
+  const expCount=inv.filter(i=>i.days<=3).length;
+
+  function saveItem(it){ setInv(prev=>{const ex=prev.some(p=>p.id===it.id);return ex?prev.map(p=>p.id===it.id?it:p):[it,...prev];}); setEditing(false); toast(editing&&editing.id?"Item updated.":"Added to your fridge."); }
+  function removeItem(id){ setInv(prev=>prev.filter(p=>p.id!==id)); setEditing(false); toast("Removed from fridge."); }
+  function clearAll(){ setInv([]);setSwaps({});setSaved([]);setCo2Saved(0);setLog([{t:"Basket forecast",d:"Five staples projected to deplete in 3 to 5 days. Sourced within 15 km.",time:"2h ago"}]); setSettings(false); toast("All app data cleared."); }
+
+  if(!hydrated) return <div className="splash"><div className="leaf" style={{width:54,height:54,borderRadius:16}}>{I.leaf()}</div></div>;
+
+  return <div id="app">
+    <TopBar onSettings={()=>setSettings(true)} killed={killed}/>
+    {tab==="today"&&<Today inv={inv} grade={grade} co2Saved={co2Saved} setTab={setTab}/>}
+    {tab==="scan"&&<Fridge inv={inv} setInv={setInv} loadSample={()=>{setInv(SAMPLE_FRIDGE());toast("Sample fridge loaded.");}} toast={toast} edit={(it)=>setEditing(it)} openSettings={()=>setSettings(true)} hasKey={!!apiKey}/>}
+    {tab==="carbon"&&<Carbon inv={inv} swaps={swaps} setSwaps={setSwaps} addSaved={addSaved} toast={toast} setTab={setTab}/>}
+    {tab==="recipe"&&<Recipe inv={inv} diet={diet} setDiet={setDiet} saved={saved} save={(t)=>{setSaved(s=>[...s,t]);addSaved(0.7);}} toast={toast} setTab={setTab} hasKey={!!apiKey}/>}
+    {tab==="order"&&<Order killed={killed} setKilled={setKilled} cap={cap} setCap={setCap} auto={auto} setAuto={setAuto} log={log} addLog={(e)=>setLog(l=>[e,...l])} toast={toast}/>}
+    {toastMsg&&<div className="toast">{I.check("#E7CE72")}{toastMsg}</div>}
+    <Tabs tab={tab} setTab={setTab} expCount={expCount} canOrder={!killed}/>
+    {editing!==false&&<ItemSheet item={editing} close={()=>setEditing(false)} save={saveItem} remove={removeItem}/>}
+    {settings&&<Settings close={()=>setSettings(false)} diet={diet} setDiet={setDiet} cap={cap} setCap={setCap} auto={auto} setAuto={setAuto} killed={killed} setKilled={setKilled} toast={toast} clearAll={clearAll} apiKey={apiKey} setApiKey={setApiKey}/>}
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

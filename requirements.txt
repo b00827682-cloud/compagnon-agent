@@ -1,0 +1,3 @@
+# Python deps — only needed to run the MCP producer server (mcp/).
+# The agent tests (Node) and the app (browser) do NOT need these.
+fastmcp>=2.0
