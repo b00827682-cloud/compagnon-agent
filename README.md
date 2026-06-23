@@ -1,5 +1,8 @@
 # Compagnon — Sustainable Food Companion · Agent build
 
+## Live Demo Link
+https://www.loom.com/share/67d7c9f32582488f9b4fcb4b570052b1
+
 **Class 6 build deliverable — Team 5, ESSEC AI for Marketing & Innovation.**
 
 The product is **Compagnon**, a mobile-first app that scans a fridge, scores its
