@@ -6,7 +6,7 @@ const suites = ["test_robustness.js", "test_bias.js", "test_carbon.js", "test_ex
 console.log("Running all suites (mock mode, no API key needed)\n");
 for (const s of suites) {
   console.log("-".repeat(58));
-  try { console.log(execSync(`node ${path.join(__dirname, s)}`, { encoding: "utf8" })); }
+  try { console.log(execSync(`node "${path.join(__dirname, s)}"`, { encoding: "utf8" })); }
   catch (e) { console.log(e.stdout || e.message); }
 }
 console.log("-".repeat(58));

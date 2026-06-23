@@ -26,8 +26,19 @@ itself (`app/compagnon.html`) needs only a web browser — no Node required.
 # open the app in a browser
 open "app/compagnon.html"        # macOS    (or: xdg-open on Linux)
 ```
-Use "Load sample fridge" for an instant demo, or scan a real fridge photo
-(works keyless inside the Claude app, or with your own key — see app/APP_README.md).
+Use "Load sample fridge" for an instant demo, or scan a real fridge photo.
+
+**Running the photo scan.** The scan reads the actual image with a vision model,
+so it works on any photo. The model call is reached in one of two ways:
+- **Inside Claude (free)** — open the app from the Claude.ai artifact panel or the
+  Claude app; the call is authenticated automatically, no key or billing.
+- **Standalone with your own key** — open Settings, paste an Anthropic API key
+  (from console.anthropic.com) into the Connection field, and save. The app then
+  calls the model directly from any browser; the key is stored only on the device.
+
+If the model can't be reached (e.g. the file opened in a plain browser with no
+key), the scan shows a clear message and everything else still works offline: add
+items by hand, load the sample fridge, and use the carbon, recipe, and order flows.
 
 **Run the agent headlessly + all tests (no API key needed):**
 ```bash
@@ -82,7 +93,6 @@ below the basket total, or toggle the kill switch.
 | Path | Contents |
 |---|---|
 | `app/compagnon.html` | **The shipping app** — five flows, real Claude vision + recipe engine |
-| `app/APP_README.md` | How to run the app keyless or with a key |
 | `agent/core.js` | The agent's decision logic, **copied verbatim from the app** (source lines noted) |
 | `agent/model_client.js` | Anthropic call mirroring the app's `callClaude`, with offline mock |
 | `agent/run.js` | Headless reproduction of the recipe + order trajectory (for tracing/tests) |

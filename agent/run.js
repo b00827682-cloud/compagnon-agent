@@ -14,7 +14,7 @@
 const fs = require("fs");
 const path = require("path");
 const core = require("./core");
-const { callClaude, mockEnabled } = require("./model_client");
+const { callClaude, mockEnabled, MODEL } = require("./model_client");
 
 const TRACE = [];
 function trace(step, data) {
@@ -39,7 +39,7 @@ async function recipeStep(inv, diet) {
 
   const sys = "You are the Recipe Engine. Return ONLY JSON.";
   const user = `Inventory: ${inv.map(i => i.name).join(", ")}\nDietary: ${diet}`;
-  const data = await callClaude({ model: core.MODEL, max_tokens: 1300, system: sys,
+  const data = await callClaude({ model: MODEL, max_tokens: 1300, system: sys,
     messages: [{ role: "user", content: user }] });
   const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("");
 
